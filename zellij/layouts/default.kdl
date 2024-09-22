@@ -1,0 +1,74 @@
+layout {
+	default_tab_template {
+		children
+			pane size=1 borderless=true {
+				plugin location="zellij:compact-bar"
+			}
+		// pane size=1 borderless=true {
+		// 	plugin location="zellij:tab-bar"
+		// }
+		// pane size=2 borderless=true {
+		// 	plugin location="zellij:status-bar"
+		// }
+	}
+
+	swap_tiled_layout name="vertical" {
+		tab max_panes=5 {
+			pane split_direction="vertical" {
+				pane
+				pane split_direction="horizontal" {
+					pane
+					pane
+					pane
+				}
+			}
+		}
+		tab min_panes=5 {
+			pane split_direction="vertical" {
+				pane
+				pane stacked=true {
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+				}
+			}
+		}
+	}
+
+	swap_tiled_layout name="horizontal" {
+		tab max_panes=5 {
+			pane split_direction="horizontal" {
+				pane
+				pane split_direction="vertical" {
+					pane
+					pane
+					pane
+				}
+			}
+		}
+		tab min_panes=5 {
+			pane split_direction="horizontal" {
+				pane
+				pane stacked=true {
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,139 @@
+
+###############################################
+#                  MANAGERS                   #
+###############################################
+managers:
+  apt:
+    install: sudo apt install -y {package}
+    remove: sudo apt remove -y {package}
+  cargo:
+    install: cargo install --locked -y {package}
+    remove: cargo remove -y {package}
+    dependencies:
+      - rustup
+  go:
+    install: go install {package}
+    remove: go remove {package}
+    dependencies:
+      - go
+  snap:
+    install: sudo snap install {package} --classic
+    remove: sudo snap remove {package} --classic
+    dependencies:
+      - snap
+  npm:
+    install: npm install {package} -v {version}
+    remove: npm remove {package}
+    dependencies:
+      - nvm
+
+###############################################
+#                  PACKAGES                   #
+###############################################
+packages:
+  # https://github.com/Julien-cpsn/ATAC
+  atac:
+    about: Arguably a Terminal API Client
+    manager: cargo
+  # https://github.com/orhun/binsider
+  binsider:
+    about: Swiss army knife for reverse engineers
+    manager: cargo
+  go:
+    manager: snap
+  # https://github.com/charmbracelet/vhs
+  vhs:
+    about: Write terminal GIFs as code for integration testing and demoing your CLI tools
+    label: github.com/charmbracelet/vhs@latest
+    manager: go
+    dependencies:
+      - ffmpeg
+      - ttyd
+  # https://github.com/tsl0922/ttyd
+  ttyd:
+    about: Simple command-line tool for sharing terminal over the web
+    manager: snap
+  # https://ffmpeg.org/
+  ffmpeg:
+    about: A complete, cross-platform solution to record, convert and stream audio and video
+    manager: apt
+  # https://github.com/maaslalani/slides
+  slides:
+    about: Slides in your terminal
+    label: github.com/maaslalani/slides@latest
+    manager: go
+  exa:
+    manager: apt
+  fzf:
+    manager: apt
+  gitui:
+    manager: cargo
+  npm:
+    install: nvm install latest
+    dependencies:
+      - nvm
+  nvim:
+    install: | # there must be a better way...
+      curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
+      tar xzf nvim-linux64.tar.gz
+      sudo cp -r nvim-linux64/bin/nvim /usr/bin/nvim # neovim binary
+      sudo cp -r nvim-linux64/share/nvim/runtime /usr/local/share/nvim # neovim runtime
+    dependencies:
+      - curl
+      # - tar
+  nvm:
+    install: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash -s -- -y
+    dependencies:
+      - curl
+  rustup:
+    install: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    remove: rustup self uninstall -y
+    dependencies:
+      - curl
+  snap:
+    manager: apt
+  starship:
+    install: curl -sS https://starship.rs/install.sh | sh -s -- -y
+    remove: rm "$(command -v 'starship')"
+    version: 2.0.1
+    dependencies:
+      - curl
+  zellij:
+    manager: cargo
+
+###############################################
+#                    HOOKS                    #
+###############################################
+hooks:
+  pre:
+    build: sudo apt update -y
+  post:
+    install:
+      go: echo 'export PATH=$PATH:/usr/local/go/bin' >> .profile
+      starship: echo '\neval "$(starship init bash)"' >> .bashrc
+      exa: |
+        echo '\nalias ls="exa -l"' >> .bashrc
+        echo 'alias lsa="exa -la"' >> .bashrc
+      fzf: |
+        echo 'export FZF_DEFAULT_OPTS="' >> .bashrc
+        echo '	--color=fg:#908caa,bg:#191724,hl:#ebbcba' >> .bashrc
+        echo '	--color=fg+:#e0def4,bg+:#26233a,hl+:#ebbcba' >> .bashrc
+        echo '	--color=border:#403d52,header:#31748f,gutter:#191724' >> .bashrc
+        echo '	--color=spinner:#f6c177,info:#9ccfd8' >> .bashrc
+        echo '	--color=pointer:#c4a7e7,marker:#eb6f92,prompt:#908caa"' >> .bashrc
+        echo 'export BAT_THEME="ansi"' >> .bashrc
+        echo 'alias f='fd -t f . $HOME | fzf --layout=reverse --info=inline --border --margin=1 --padding=1 --preview "batcat -n --color=always {}" | xargs -r nvim'' >> .bashrc
+        echo 'alias d='cd $(fd -t d . $HOME | fzf --height=50% --layout=reverse --info=inline --border --margin=1 --padding=1)'' >> .bashrc
+      nvim: ln -s ~/dotfiles/nvim ~/.config/nvim
+      nvm: |
+        echo 'export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"' >> .bashrc
+        echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm' >> .bashrc
+      gitui: ln -s ~/.bp/config/gitui ~/.config/gitui
+      zellij: ln -s ~/.bp/config/zellij ~/.config/zellij
+      bob: asdfasdfas
+      asfagasdf: asfasdf
+    remove:
+      gitui: rm -rf ~/.config/gitui
+      nvim: rm -rf ~/.config/nvim
+      zed: asf
+      zellij: rm -rf ~/.config/zellij

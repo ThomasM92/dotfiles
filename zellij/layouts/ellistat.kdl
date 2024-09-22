@@ -1,0 +1,90 @@
+layout {
+	cwd "/home/tm/dev"
+	default_tab_template {
+		children
+			pane size=1 borderless=true {
+				plugin location="zellij:compact-bar"
+			}
+	}
+	tab name="ElliDocker" cwd="ElliDocker" {
+		pane name="main"
+	}
+	tab name="ElliCAD" cwd="ElliCAD" {
+		pane name="main"
+	}
+	tab name="ElliFAO" cwd="ElliFAO" {
+		pane name="main"
+	}
+	tab name="ElliScene" cwd="ElliScene" {
+		pane name="main"
+	}
+	tab name="ElliMatrix" cwd="ElliMatrix" {
+		pane name="main"
+	}
+	tab name="ElliServer" cwd="EllistatApplication/server" {
+		pane name="main"
+	}
+	tab name="ElliClient" cwd="EllistatApplication/frontend" {
+		pane name="main"
+	}
+
+	swap_tiled_layout name="vertical" {
+		tab max_panes=5 {
+			pane split_direction="vertical" {
+				pane
+				pane split_direction="horizontal" {
+					pane
+					pane
+					pane
+				}
+			}
+		}
+		tab min_panes=5 {
+			pane split_direction="vertical" {
+				pane
+				pane stacked=true {
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+				}
+			}
+		}
+	}
+
+	swap_tiled_layout name="horizontal" {
+		tab max_panes=5 {
+			pane split_direction="horizontal" {
+				pane
+				pane split_direction="vertical" {
+					pane
+					pane
+					pane
+				}
+			}
+		}
+		tab min_panes=5 {
+			pane split_direction="horizontal" {
+				pane
+				pane stacked=true {
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+					pane
+				}
+			}
+		}
+	}
+}
