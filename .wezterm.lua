@@ -3,53 +3,25 @@ local wezterm = require 'wezterm'
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
-local color_scheme = 'Rosé Pine (Gogh)'
-local scheme = wezterm.color.get_builtin_schemes()[color_scheme]
--- config.color_scheme = 'Rosé Pine (Gogh)'
 
+-- config.max_fps = 144
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 10
+config.window_background_opacity = 0.99
 -- config.window_background_image = '/home/tm/Pictures/Wallpapers/below_wallpaper.png'
--- config.window_background_opacity = 0.8
 
 config.use_fancy_tab_bar = false
 config.window_decorations = "INTEGRATED_BUTTONS | RESIZE"
--- config.hide_tab_bar_if_only_one_tab = true
-config.window_close_confirmation = "NeverPrompt"
+config.hide_tab_bar_if_only_one_tab = true
+-- config.tab_and_split_indices_are_zero_based = true
+-- config.window_close_confirmation = "NeverPrompt"
 config.window_padding = {
-	left = 10, right = 10, top = 15, bottom = 0
+	left = 10, right = 10, top = 5, bottom = 0
 }
 
-
-config.tab_and_split_indices_are_zero_based = true
-config.color_scheme = color_scheme
-config.colors = {
-  tab_bar = {
-	background = scheme.background,
-    active_tab = {
-      bg_color = scheme.background,
-      fg_color = scheme.foreground,
-	  intensity = 'Bold',
-    },
-	inactive_tab = {
-      bg_color = scheme.background,
-      fg_color = scheme.foreground,
-	},
-	inactive_tab_hover = {
-      bg_color = scheme.background,
-      fg_color = scheme.foreground,
-	  italic = true,
-	},
-	new_tab = {
-      bg_color = scheme.background,
-      fg_color = scheme.foreground,
-	},
-	new_tab_hover = {
-      bg_color = scheme.background,
-      fg_color = scheme.foreground,
-	},
-  }
-}
+-- https://github.com/neapsix/wezterm
+local theme = wezterm.plugin.require('https://github.com/neapsix/wezterm').main
+config.colors = theme.colors()
 
 config.mouse_bindings = {
   {
@@ -63,7 +35,7 @@ config.mouse_bindings = {
 config.keys = {
 	{
 		mods = "ALT",
-		key = "N",
+		key = "n",
 		action = wezterm.action.SpawnTab "CurrentPaneDomain",
 	},
 	{
@@ -73,7 +45,7 @@ config.keys = {
 	},
 	{
 		mods = "ALT",
-		key = "n",
+		key = "N",
 		action = wezterm.action.SplitHorizontal { domain = "CurrentPaneDomain" },
 	},
 	{
@@ -83,32 +55,32 @@ config.keys = {
 	},
 	{
 		mods = "ALT",
-		key = "H",
+		key = "h",
 		action = wezterm.action.ActivateTabRelative(-1),
 	},
 	{
 		mods = "ALT",
-		key = "L",
+		key = "l",
 		action = wezterm.action.ActivateTabRelative(1),
 	},
 	{
 		mods = "ALT",
-		key = "h",
+		key = "H",
 		action = wezterm.action.ActivatePaneDirection "Left",
 	},
 	{
 		mods = "ALT",
-		key = "j",
+		key = "J",
 		action = wezterm.action.ActivatePaneDirection "Down",
 	},
 	{
 		mods = "ALT",
-		key = "k",
+		key = "K",
 		action = wezterm.action.ActivatePaneDirection "Up",
 	},
 	{
 		mods = "ALT",
-		key = "l",
+		key = "L",
 		action = wezterm.action.ActivatePaneDirection "Right",
 	},
 	{
@@ -131,8 +103,98 @@ config.keys = {
 		key = "UpArrow",
 		action = wezterm.action.AdjustPaneSize { "Up", 5 },
 	},
+	{
+		key = 'w',
+		mods = 'ALT',
+		action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|WORKSPACES' },
+	},
+	{
+		key = 't',
+		mods = 'ALT',
+		action = wezterm.action.ShowLauncherArgs { flags = 'FUZZY|TABS' },
+	},
+{
+    key = 'r',
+    mods = 'ALT',
+    action = wezterm.action.PromptInputLine {
+      description = 'Enter new name for tab',
+      action = wezterm.action_callback(function(window, pane, line)
+        -- line will be `nil` if they hit escape without entering anything
+        -- An empty string if they just hit enter
+        -- Or the actual line of text they wrote
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    },
+  },
+	{ key = 'q', mods = 'ALT', action = wezterm.action.QuitApplication },
 }
 
+-- WORKSPACES
+wezterm.on('gui-startup', function(cmd)
+	spawn_ellistat_workspace()
+	spawn_personal_workspace()
+	spawn_default_workspace()
+end)
+
+function spawn_default_workspace()
+	local home_path = wezterm.home_dir
+	local tab, _, window = wezterm.mux.spawn_window {
+		workspace = 'default',
+		cwd = home_path
+	}
+end
+
+function spawn_personal_workspace()
+	local home_path = wezterm.home_dir
+	local tab, _, window = wezterm.mux.spawn_window {
+		workspace = 'personal',
+		cwd = home_path .. '/dev/afmg'
+	}
+	tab:set_title 'afmg'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/bp'
+	}
+	tab:set_title 'bp'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/cad'
+	}
+	tab:set_title 'cad'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/pw'
+	}
+	tab:set_title 'pw'
+end
+
+function spawn_ellistat_workspace()
+	local home_path = wezterm.home_dir
+	local tab, _, window = wezterm.mux.spawn_window {
+		workspace = 'ellistat',
+		cwd = home_path .. '/dev/ElliCAD'
+	}
+	tab:set_title 'ElliCAD'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/ElliCAM'
+	}
+	tab:set_title 'ElliCAM'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/ElliMatrix'
+	}
+	tab:set_title 'ElliMatrix'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/ElliScene'
+	}
+	tab:set_title 'ElliScene'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/EllistatApplication/server'
+	}
+	tab:set_title 'ElliServer'
+	local tab, _, _ = window:spawn_tab {
+		cwd = home_path .. '/dev/EllistatApplication/frontend'
+	}
+	tab:set_title 'ElliClient'
+end
 
 -- and finally, return the configuration to wezterm
 return config
