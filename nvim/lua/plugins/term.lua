@@ -12,7 +12,7 @@ return {
 		vim.bo.modified = false
 		vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 		vim.keymap.set({ 'n' }, '<leader>t', function() buffer_term.toggle('default') end)
-		vim.keymap.set({ 't' }, '<Esc>t', function() buffer_term.toggle('default') end)
+		vim.keymap.set({ 't' }, '<C-t>', function() buffer_term.toggle('default') end)
 		-- vim.keymap.set({ 'n', 't' }, ';s', function() buffer_term.toggle('s') end)
 		-- vim.keymap.set({ 'n', 't' }, ';d', function() buffer_term.toggle('d') end)
 		-- vim.keymap.set({ 'n', 't' }, ';f', function() buffer_term.toggle('f') end)

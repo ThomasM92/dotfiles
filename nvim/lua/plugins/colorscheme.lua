@@ -3,12 +3,14 @@ return {
 	-- "ntk148v/komau.vim",
 	'rose-pine/neovim',
 	-- 'kdheepak/monochrome.nvim',
+	-- 'bettervim/yugen.nvim',
 	lazy = false, -- make sure we load this during startup if it is your main colorscheme
 	priority = 1000, -- make sure to load this before all the other start plugins
 	-- name = 'komau',
 	name = 'rose-pine',
 	-- name = 'vesper',
 	-- name = 'monochome',
+	-- name = 'yugen',
 	config = function()
 		require('rose-pine').setup({
 			--- @usage 'auto'|'main'|'moon'|'dawn'
@@ -18,6 +20,7 @@ return {
 			disable_background = true,
 		})
 		vim.cmd('colorscheme rose-pine')
+		-- vim.cmd('colorscheme yugen')
 
 		-- require('vesper').setup({})
 		-- vim.cmd('colorscheme vesper')

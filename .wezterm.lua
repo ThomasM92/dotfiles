@@ -20,8 +20,8 @@ config.window_padding = {
 }
 
 -- https://github.com/neapsix/wezterm
-local theme = wezterm.plugin.require('https://github.com/neapsix/wezterm').main
-config.colors = theme.colors()
+-- local theme = wezterm.plugin.require('https://github.com/neapsix/wezterm').main
+-- config.colors = theme.colors()
 
 config.mouse_bindings = {
   {
