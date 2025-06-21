@@ -1,0 +1,63 @@
+# Tips & Tricks
+# - create new file -> :o <C-r>% <A-del> file-name.extension <enter>
+# - temporary close helix session <C-z> -> do whaterver in terminal -> when done <fg>
+#   (foreground) to bring back suspended helix process
+
+# building from source -> add `export HELIX_RUNTIME="$HOME/path/to/helix/runtime"` in .bashrc
+# todos
+# - clipboard provider
+# - C-n create new file in buffer-directory
+
+theme = "rose-pine"
+
+[editor]
+mouse = false
+line-number = "relative"
+color-modes = true # Resolve true color detection problems (e.g. on Linux in Windows WSL2)
+end-of-line-diagnostics = "hint" # Minimum severity to show a diagnostic after the end of a line (v25.01) 
+# rulers = [100] # shows a ruler at column 100
+# bufferline = "multiple" # shows buffer tabs in topbar
+ 
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.whitespace.render]
+newline = "all"
+
+[editor.whitespace.characters]
+newline = "↵"
+
+[editor.indent-guides]
+render = true
+character = "╎"
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control", "file-name"]
+right = ["diagnostics", "selections", "register", "position", "file-encoding"]
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
+
+[editor.file-picker]
+hidden = true
+
+[editor.lsp]
+auto-signature-help = false # Disable automatically popups of signature parameter help (v25.01)
+display-messages = true # Show LSP messages in the status line (v25.01)
+
+[keys.normal]
+a = ["append_mode", "collapse_selection"]
+i = ["insert_mode", "collapse_selection"]
+# "C-l" = "goto_next_buffer"
+# "C-h" = "goto_previous_buffer"
+"C-j" = [ "extend_to_line_bounds", "delete_selection", "paste_after" ]
+"C-k" = [ "extend_to_line_bounds", "delete_selection", "move_line_up", "paste_before" ]
+"X" = "select_line_above"
+D = ["ensure_selections_forward", "extend_to_line_end", "delete_selection"]
+
+[keys.normal.space]
+n = "@:o <C-r>%<C-w>"
+x = "@:sh rm <C-r>%"
+# r = "@:sh mv <C-r>% <C-r>%<C-w>"

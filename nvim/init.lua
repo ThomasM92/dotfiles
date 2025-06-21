@@ -46,10 +46,9 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', options)
 vim.keymap.set('n', '<C-k>', '<C-w>k', options)
 vim.keymap.set('n', '<C-l>', '<C-w>l', options)
 
--- Tabs navigation
-vim.keymap.set('n', '<S-Tab>', '<Plug>(cokeline-focus-prev)', options)
-vim.keymap.set('n', '<Tab>', '<Plug>(cokeline-focus-next)', options)
-vim.keymap.set('n', '<leader>b', '<Plug>(cokeline-pick-focus)', options)
+-- Better scrolling
+vim.keymap.set('n', '<C-d>', '<C-d>zz', options)
+vim.keymap.set('n', '<C-u>', '<C-u>zz', options)
 
 -- Settings
 vim.keymap.set('n', '<leader>,', ':e $MYVIMRC <CR>', options)
@@ -61,8 +60,11 @@ vim.keymap.set('n', '<leader>s', '*N', options)
 
 -- NEOVIDE
 vim.opt.incsearch = true
--- vim.opt.backup = false                          -- creates a backup file
-vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
+-- vim.opt.backup = false							-- creates a backup file
+
+
+-- sudo apt install xclip
+vim.opt.clipboard = "unnamedplus"					-- allows neovim to access the system clipboard
 vim.opt.cmdheight = 1 -- more space in the neovim command line for displaying messages
 -- vim.opt.completeopt = { "menuone", "noselect" } -- mostly just for cmp
 -- vim.opt.conceallevel = 0                        -- so that `` is visible in markdown files

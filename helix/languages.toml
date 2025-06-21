@@ -1,0 +1,76 @@
+# tutorials: https://github.com/helix-editor/helix/wiki/Language-Server-Configurations
+
+# rustup component add rust-analyzer
+[[language]]
+name = "rust"
+language-servers = [ "rust-analyzer" ]
+auto-format = true
+indent = { tab-width = 4, unit = "\t" }
+roots = [
+  "Cargo.toml",
+  "Cargo.lock"
+]
+
+# [language.auto-pairs]
+# '(' = ')'
+# '{' = '}'
+# '[' = ']'
+# '"' = '"'
+# '`' = '`'
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+# npm i -g typescript-language-server typescript
+# npm i -g prettier
+[[language]]
+name = "typescript"
+language-servers = [ "typescript-language-server" ]
+formatter = { command = "prettier" }
+auto-format = true
+indent = { tab-width = 4, unit = "\t" }
+
+# npm i -g vscode-langservers-extracted
+# npm i -g prettier
+[[language]]
+name = "json"
+language-servers = [ "vscode-json-language-server" ]
+formatter = { command = "prettier", args = [ "--parser", "json" ] }
+auto-format = true
+
+# npm i -g vscode-langservers-extracted
+# npm i -g prettier
+[[language]]
+name = "html"
+language-servers = [ "vscode-html-language-server" ]
+formatter = { command = "prettier", args = [ "--parser", "html" ] }
+auto-format = true
+
+# npm i -g vscode-langservers-extracted
+# npm i -g prettier
+[[language]]
+name = "css"
+language-servers = [ "vscode-css-language-server" ]
+formatter = { command = "prettier", args = [ "--parser", "css" ] }
+auto-format = true
+
+# npm i -g bash-language-server
+[[language]]
+name = "bash"
+language-servers = [ "bash-language-server" ]
+# formatter = { command = "shfmt" } # https://github.com/mvdan/sh#shfmt
+auto-format = true
+
+# go install golang.org/x/tools/gopls@latest                               # LSP
+# go install github.com/go-delve/delve/cmd/dlv@latest                      # Debugger
+# go install golang.org/x/tools/cmd/goimports@latest                       # Formatter
+# go install github.com/nametake/golangci-lint-langserver@latest           # Linter
+# go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest # Linter cli
+[[language]]
+name = "go"
+language-servers = [ "gopls" ]
+formatter = { command = "goimports" }
+auto-format = true
