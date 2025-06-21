@@ -37,8 +37,49 @@
     # '')
     # cowsay
     # cmatrix
+    rust
+    yazi
     dust
+    tokei
+    wasm-pack
+    git
+    gh
+    gitui
+    starship
+    fzf
+    exa
+    nvim
+    fd
+    ripgrep
+    bat
+    hyperfine
+    nodejs_24
+    # npm # does it comes with nodejs_24?
+    brave-browser
+    chromium-browser
+    wmctrl
+    # https://github.com/charmbracelet/vhs
+    # Write terminal GIFs as code
+    vhs
+    # https://github.com/maaslalani/slides
+    # Slides in your terminal
+    slides
+    jq
+    jqp
+    docker
+    steam
+    LDtk
+    MongoDB
+    MongoDB Compas
+    Postman
+    SimpleScreenRecorder
+    VLC media player
   ];
+
+  # todos
+  # - JetBrain Mono NerdFont
+  # - background
+  # - shortcuts with wmctrl
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -49,7 +90,8 @@
     # ".screenrc".source = dotfiles/screenrc;
 
     # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
+    # ".gra
+    # dle/gradle.properties".text = ''
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
