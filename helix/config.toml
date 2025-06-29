@@ -17,6 +17,7 @@ color-modes = true # Resolve true color detection problems (e.g. on Linux in Win
 end-of-line-diagnostics = "hint" # Minimum severity to show a diagnostic after the end of a line (v25.01) 
 # rulers = [100] # shows a ruler at column 100
 # bufferline = "multiple" # shows buffer tabs in topbar
+idle-timeout = 0 # Time in milliseconds since last keypress before idle timers trigger. Used for autocompletion, set to 0 for instant
  
 [editor.cursor-shape]
 insert = "bar"
@@ -46,6 +47,10 @@ hidden = true
 [editor.lsp]
 auto-signature-help = false # Disable automatically popups of signature parameter help (v25.01)
 display-messages = true # Show LSP messages in the status line (v25.01)
+
+[editor.inline-diagnostics]
+cursor-line = "hint" # Show inline diagnostics when the cursor is on the line
+other-lines = "disable" # Don't expand diagnostics unless the cursor is on the line
 
 [keys.normal]
 a = ["append_mode", "collapse_selection"]
