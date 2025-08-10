@@ -8,7 +8,9 @@
 # - clipboard provider
 # - C-n create new file in buffer-directory
 
-theme = "rose-pine"
+theme = "rose_pine"
+# theme = "vesper"
+# theme = "monochrome"
 
 [editor]
 mouse = false
@@ -66,3 +68,10 @@ D = ["ensure_selections_forward", "extend_to_line_end", "delete_selection"]
 n = "@:o <C-r>%<C-w>"
 x = "@:sh rm <C-r>%"
 # r = "@:sh mv <C-r>% <C-r>%<C-w>"
+e = [
+  ':sh rm -f /tmp/unique-file',
+  ':insert-output yazi %{buffer_name} --chooser-file=/tmp/unique-file',
+  ':insert-output echo "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+  ':open %sh{cat /tmp/unique-file}',
+  ':redraw',
+]

@@ -7,7 +7,7 @@ local config = wezterm.config_builder()
 config.max_fps = 144
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 10
-config.window_background_opacity = 0.99
+config.window_background_opacity = 0.95
 -- config.window_background_image = '/home/tm/Pictures/Wallpapers/below_wallpaper.png'
 
 config.use_fancy_tab_bar = false
@@ -34,7 +34,7 @@ config.mouse_bindings = {
 -- terminal multiplexer
 
 -- keeps track of all tab' states (file_explorer pane, term_pane, etc)
---- @alias TabState { main_pane_id: string, [string]: string | nil }
+--- @alias TabState { main_pane_id: string, [key]: key_pane_id | nil }
 --- @type table<string, TabState>
 local state_by_tab_id = {}
 
@@ -58,7 +58,6 @@ local function toggle_pane(pane, key, args)
 
 	-- initialize panes state tracking for this tab
 	local tab_id = tab:tab_id()
-	wezterm.log_info("tab_id", tab_id)
 	local tab_state = state_by_tab_id[tab_id]
 	if tab_state == nil then
 		tab_state = { main_pane_id = pane:pane_id() }
@@ -78,6 +77,7 @@ local function toggle_pane(pane, key, args)
 
 	-- pane was never toggled or was deleted
 	if key_pane_id == nil or key_pane == nil then
+		wezterm.log_info("args", args)
 		local new_pane_id = pane:split({
 			direction = "Bottom",
 			size = 0.5,
@@ -117,8 +117,8 @@ config.keys = {
 	},
 	{
 		mods = "ALT",
-		key = "-",
 		action = wezterm.action.SplitVertical { domain = "CurrentPaneDomain" },
+		key = "-",
 	},
 	{
 		mods = "ALT",
@@ -195,50 +195,52 @@ config.keys = {
 			end),
 		},
 	},
-	{
-		key = "t",
-		mods = 'ALT',
-		action = wezterm.action_callback(function(_, pane)
-            local tab = pane:tab()
-            local panes = tab:panes_with_info()
-            if #panes == 1 then
-                pane:split({
-                    direction = "Bottom",
-                    size = 0.2,
-                })
-            elseif not panes[1].is_zoomed or not panes[1].is_active then
-                tab:set_zoomed(false)
-                panes[1].pane:activate()
-                tab:set_zoomed(true)
-            elseif panes[1].is_zoomed or panes[1].is_active then
-                tab:set_zoomed(false)
-                panes[2].pane:activate()
-            end
-		end),
-	},
-	{
-		key = "f",
-		mods = "ALT",
-		action = wezterm.action_callback(function(_, pane)
-			local tab = pane:tab()
-			local handle = find(tab:panes_with_info(), pane:pane_id())
-			if handle == nil or not handle.is_active then
-				return
-			end
-			if handle.is_zoomed then
-				tab:set_zoomed(false)
-			else
-				tab:set_zoomed(true)
-			end
-		end)
-	},
 	-- {
 	-- 	key = "t",
 	-- 	mods = 'ALT',
 	-- 	action = wezterm.action_callback(function(_, pane)
-	-- 		toggle_pane(pane, "t", {})
+	-- 		local tab = pane:tab()
+	-- 		local panes = tab:panes_with_info()
+	-- 		if #panes == 1 then
+	-- 			pane:split({
+	-- 				direction = "Bottom",
+	-- 				size = 0.2,
+	-- 			})
+	-- 			tab:set_zoomed(true)
+	-- 			panes[2].pane:activate()
+	-- 		elseif not panes[1].is_zoomed or not panes[1].is_active then
+	-- 			tab:set_zoomed(false)
+	-- 			panes[1].pane:activate()
+	-- 			tab:set_zoomed(true)
+ --      elseif panes[1].is_zoomed or panes[1].is_active then
+	-- 			tab:set_zoomed(false)
+	-- 			panes[2].pane:activate()
+	-- 		end
 	-- 	end),
 	-- },
+	-- {
+	-- 	key = "f",
+	-- 	mods = "ALT",
+	-- 	action = wezterm.action_callback(function(_, pane)
+	-- 		local tab = pane:tab()
+	-- 		local handle = find(tab:panes_with_info(), pane:pane_id())
+	-- 		if handle == nil or not handle.is_active then
+	-- 			return
+	-- 		end
+	-- 		if handle.is_zoomed then
+	-- 			tab:set_zoomed(false)
+	-- 		else
+	-- 			tab:set_zoomed(true)
+	-- 		end
+	-- 	end)
+	-- },
+	{
+		key = "t",
+		mods = 'ALT',
+		action = wezterm.action_callback(function(_, pane)
+			toggle_pane(pane, "t", {})
+		end),
+	},
 	-- {
 	-- 	key = "e",
 	-- 	mods = 'ALT',
@@ -250,7 +252,7 @@ config.keys = {
 	-- 	key = "g",
 	-- 	mods = 'ALT',
 	-- 	action = wezterm.action_callback(function(_, pane)
-	-- 		toggle_pane(pane, "g", { "gitui" })
+	-- 		toggle_pane2(pane, "g", { "gitui" })
 	-- 	end),
 	-- },
 	{ key = 'q', mods = 'ALT', action = wezterm.action.QuitApplication },
